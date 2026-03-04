@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Generator Stránek</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; color: #333; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 12px; shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #2ea44f; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 5px; width: 100%; font-size: 16px; }
+        textarea { width: 100%; height: 200px; margin-top: 20px; display: none; font-family: monospace; font-size: 12px; }
+        .step { display: none; margin-top: 20px; padding: 15px; background: #e7f3ff; border-left: 5px solid #2196f3; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Vytvoř si vlastní AI stránku</h2>
+    <p>Zadej údaje a já ti vygeneruji kód pro GitHub!</p>
+    
+    <input type="text" id="aiName" placeholder="Jméno tvé AI (např. MojeAI)">
+    <input type="color" id="aiColor" value="#2196f3">
+    <p style="font-size: 12px;">Vyber hlavní barvu své AI</p>
+    
+    <button onclick="generateCode()">Vygenerovat kód a návod</button>
+
+    <div id="instructions" class="step">
+        <h3>Tvůj kód je připraven!</h3>
+        <p>1. Zkopíruj kód níže.<br>2. Na GitHubu vytvoř soubor <b>index.html</b>.<br>3. Vlož do něj tento kód.</p>
+        <textarea id="outputCode"></textarea>
+    </div>
+</div>
+
+<script>
+function generateCode() {
+    const name = document.getElementById('aiName').value || 'Moje AI';
+    const color = document.getElementById('aiColor').value;
+    const output = document.getElementById('outputCode');
+    const instructions = document.getElementById('instructions');
+
+    // Šablona, kterou tvůj generátor "vystřelí" uživateli
+    const template = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${name}</title>
+    <style>
+        body { font-family: Arial; background: #121212; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .chat-box { width: 350px; height: 500px; background: #1e1e1e; border-top: 5px solid ${color}; border-radius: 10px; display: flex; flex-direction: column; }
+        .header { padding: 15px; text-align: center; font-weight: bold; background: ${color}22; }
+        .messages { flex: 1; padding: 10px; overflow-y: auto; font-size: 14px; }
+        .input-area { display: flex; padding: 10px; border-top: 1px solid #333; }
+        input { flex: 1; background: #2a2a2a; border: none; color: white; padding: 8px; border-radius: 4px; }
+        button { background: ${color}; border: none; color: white; margin-left: 5px; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="chat-box">
+        <div class="header">${name}</div>
+        <div class="messages" id="msgs">Ahoj! Jsem ${name}. Jak ti můžu pomoci?</div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Napiš zprávu...">
+            <button onclick="send()">Odeslat</button>
+        </div>
+    </div>
+    <script>
+        function send() {
+            const input = document.getElementById('userInput');
+            const msgs = document.getElementById('msgs');
+            if(input.value) {
+                msgs.innerHTML += "<div><b>Ty:</b> " + input.value + "</div>";
+                msgs.innerHTML += "<div><b>${name}:</b> <i>(Zatím simuluji odpověď. Pro skutečné AI musíš napojit API klíč.)</i></div>";
+                input.value = "";
+            }
+        }
+    <\/script>
+</body>
+</html>`;
+
+    output.value = template.trim();
+    output.style.display = 'block';
+    instructions.style.display = 'block';
+}
+</script>
+
+</body>
+</html>
